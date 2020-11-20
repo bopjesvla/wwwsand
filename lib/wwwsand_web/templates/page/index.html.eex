@@ -1,0 +1,101 @@
+<style>
+ <%= {:safe, File.read! Path.join(:code.priv_dir(:wwwsand), "static/css/codemirror.min.css")} %>
+
+ h1 {
+     margin-bottom: 10px;
+ }
+ html, body {
+     margin: 0;
+     padding: 0;
+     font-size: 16px;
+     font-family: "Neue Helvetica", "Segoe UI", Ubuntu, sans-serif;
+     line-height: 1.4;
+ }
+ main {
+     max-width: 800px;
+     margin: 0 auto;
+ }
+ #code-contianer {
+     border: 1px solid #dfe1e5;
+     margin-top: 28px;
+ }
+
+ input[name=run] {
+     width: 100%;
+     margin-top: 10px;
+     background: #eee;
+     box-shadow: none;
+     border-radius: 0px;
+     border: 1px solid #dfe1e5;
+     padding: 10px;
+     font-weight: bold;
+ }
+ input[name=run]:hover, input[name=run]:active {
+     background: #f7f7f7;
+ }
+ pre {
+     white-space: pre-wrap;
+ }
+</style>
+
+<h1>Sand, the Elixir sandbox</h1>
+<p>
+    This is a language-level sandbox for Elixir. Only a subset of Elixir syntax
+    can be used. More information can be found <a href="https://github.com/bopjesvla/sand">here</a>. Report bugs <a href="https://github.com/bopjesvla/sand/issues">here</a>. If you somehow manage to obtain remote access, please leave an explanation at /home/bob/rip.txt on my server, then shut it down. Thanks!
+</p>
+
+<form action="/" method="POST" id="code-form">
+    <div id="code-contianer">
+        <textarea cols="30" id="code" name="code" rows="10">
+r factorial = fn
+  1 -> 1
+  n -> n * factorial.(n - 1)
+end
+
+factorial.(5)</textarea>
+    </div>
+
+    <input name="run" type="submit" value="Run"/>
+
+</form>
+
+<pre id="output"></pre>
+
+<script>
+ <%= {:safe, File.read! Path.join(:code.priv_dir(:wwwsand), "static/js/codemirror.min.js")} %>
+
+ <%= {:safe, File.read! Path.join(:code.priv_dir(:wwwsand), "static/js/elixir.js")} %>
+
+ var editor = CodeMirror.fromTextArea(document.getElementById('code'))
+
+ var running = false
+
+ const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+
+ async function postData(url, data) {
+     // Default options are marked with *
+     const response = await fetch(url, {
+         method: 'POST', // *GET, POST, PUT, DELETE, etc.
+         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+         credentials: 'same-origin', // include, *same-origin, omit
+         headers: {
+             'Content-Type': 'application/json',
+             'X-CSRF-Token': token
+         },
+         body: JSON.stringify(data) // body data type must match "Content-Type" header
+     });
+     return response.json(); // parses JSON response into native JavaScript objects
+ }
+
+ document.getElementById('code-form').onsubmit = e => {
+     var run = async e => {
+         var res = await postData('/run', {code: editor.getValue()})
+         if (res.ok)
+             document.getElementById('output').innerText = res.result
+         else
+             document.getElementById('output').innerText = 'Execution failed. The reason:\n\n' + res.error
+     }
+     run()
+     return false
+ }
+</script>
