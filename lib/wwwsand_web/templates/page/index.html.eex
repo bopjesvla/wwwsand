@@ -55,6 +55,7 @@ factorial.(5)</textarea>
              out.innerText = res.result
          else
              out.innerText = 'Execution failed. The reason:\n\n' + res.error
+         out.scrollIntoView()
      }
      run()
      return false

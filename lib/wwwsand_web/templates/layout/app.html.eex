@@ -21,8 +21,9 @@
          line-height: 1.4;
      }
      main {
-         max-width: 800px;
+         max-width: 820px;
          margin: 0 auto;
+         padding: 0 10px;
      }
      #code-contianer {
          border: 1px solid #dfe1e5;
