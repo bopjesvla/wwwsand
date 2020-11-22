@@ -6,9 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <%= csrf_meta_tag() %>
     <title>Wwwsand · Phoenix Framework</title>
-    <!-- <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/> -->
-    <!-- <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script> -->
     <script nomodule type="text/javascript" src="<%= Routes.static_path(@conn, "/js/fetch-min.js")%>"></script>
+    <style>
+     <%= {:safe, File.read! Path.join(:code.priv_dir(:wwwsand), "static/css/codemirror.min.css")} %>
+
+     h1 {
+         margin-bottom: 10px;
+     }
+     html, body {
+         margin: 0;
+         padding: 0;
+         font-size: 16px;
+         font-family: "Neue Helvetica", "Segoe UI", Ubuntu, sans-serif;
+         line-height: 1.4;
+     }
+     main {
+         max-width: 800px;
+         margin: 0 auto;
+     }
+     #code-contianer {
+         border: 1px solid #dfe1e5;
+         margin-top: 28px;
+     }
+
+     input[name=run] {
+         width: 100%;
+         margin-top: 10px;
+         background: #eee;
+         box-shadow: none;
+         border-radius: 0px;
+         border: 1px solid #dfe1e5;
+         padding: 10px;
+         font-weight: bold;
+     }
+     input[name=run]:hover, input[name=run]:active {
+         background: #f7f7f7;
+     }
+     pre {
+         white-space: pre-wrap;
+     }
+    </style>
   </head>
   <body>
     <main role="main" class="container">

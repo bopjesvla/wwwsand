@@ -1,43 +1,3 @@
-<style>
- <%= {:safe, File.read! Path.join(:code.priv_dir(:wwwsand), "static/css/codemirror.min.css")} %>
-
- h1 {
-     margin-bottom: 10px;
- }
- html, body {
-     margin: 0;
-     padding: 0;
-     font-size: 16px;
-     font-family: "Neue Helvetica", "Segoe UI", Ubuntu, sans-serif;
-     line-height: 1.4;
- }
- main {
-     max-width: 800px;
-     margin: 0 auto;
- }
- #code-contianer {
-     border: 1px solid #dfe1e5;
-     margin-top: 28px;
- }
-
- input[name=run] {
-     width: 100%;
-     margin-top: 10px;
-     background: #eee;
-     box-shadow: none;
-     border-radius: 0px;
-     border: 1px solid #dfe1e5;
-     padding: 10px;
-     font-weight: bold;
- }
- input[name=run]:hover, input[name=run]:active {
-     background: #f7f7f7;
- }
- pre {
-     white-space: pre-wrap;
- }
-</style>
-
 <h1>Sand, the Elixir sandbox</h1>
 <p>
     This is a language-level sandbox for Elixir. Only a subset of Elixir syntax
@@ -88,12 +48,13 @@ factorial.(5)</textarea>
  }
 
  document.getElementById('code-form').onsubmit = e => {
+     var out = document.getElementById('output')
      var run = async e => {
          var res = await postData('/run', {code: editor.getValue()})
          if (res.ok)
-             document.getElementById('output').innerText = res.result
+             out.innerText = res.result
          else
-             document.getElementById('output').innerText = 'Execution failed. The reason:\n\n' + res.error
+             out.innerText = 'Execution failed. The reason:\n\n' + res.error
      }
      run()
      return false

@@ -12,7 +12,7 @@ defmodule Wwwsand.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Wwwsand.PubSub},
       # Start the Endpoint (http/https)
-      WwwsandWeb.Endpoint
+      {SiteEncrypt.Phoenix, WwwsandWeb.Endpoint}
       # Start a worker by calling: Wwwsand.Worker.start_link(arg)
       # {Wwwsand.Worker, arg}
     ]
