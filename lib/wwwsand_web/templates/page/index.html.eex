@@ -53,8 +53,12 @@ factorial.(5)</textarea>
          var res = await postData('/run', {code: editor.getValue()})
          if (res.ok)
              out.innerText = res.result
+         else if (res.error === ":killed")
+             out.innerText = 'ERROR: your program used too much memory.'
+         else if (res.error === ":max_reductions")
+             out.innerText = 'ERROR: Your program is too computationally intensive.'
          else
-             out.innerText = 'Execution failed. The reason:\n\n' + res.error
+             out.innerText = 'Execution failed. The error message:\n\n' + res.error
          out.scrollIntoView()
      }
      run()
