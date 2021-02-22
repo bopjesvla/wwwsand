@@ -73,6 +73,5 @@ defmodule WwwsandWeb.Endpoint do
   def init(_key, config) do
     # this will merge key, cert, and chain into `:https` configuration from config.exs
     {:ok, SiteEncrypt.Phoenix.configure_https(config, port: 4001)}
-    |> IO.inspect
   end
 end
